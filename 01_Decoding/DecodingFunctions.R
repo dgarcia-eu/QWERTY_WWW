@@ -13,19 +13,19 @@ linModels <- function(df, dsname, summary=FALSE)
     df.norm <- data.frame(V = V.norm, RSR = RSR.norm)
     linModelNorm <- lm(V ~ RSR, data = df.norm, model=FALSE)
   
-    dir.create(dsname, showWarnings = FALSE)  
-    save(linModel, file=paste(dsname,"LinModel.RData",sep="/"))
-    save(linModelRobust, file=paste(dsname,"LinModelRobust.RData",sep="/"))
-    save(linModelNorm, file=paste(dsname,"LinModelNorm.RData",sep="/"))
+    dir.create(paste(dsname, "rundata", sep="-"), showWarnings = FALSE)  
+    save(linModel, file=paste(dsname,"-rundata/LinModel.RData",sep=""))
+    save(linModelRobust, file=paste(dsname,"-rundata/LinModelRobust.RData",sep=""))
+    save(linModelNorm, file=paste(dsname,"-rundata/LinModelNorm.RData",sep=""))
 
     if (summary)
     {
 
     	summaryLinModel <- summary(linModel)
-   	 	save(summaryLinModel, file=paste(dsname,"SummaryLinModel.RData",sep="/"))
+   	 	save(summaryLinModel, file=paste(dsname,"-rundata/SummaryLinModel.RData",sep=""))
 
     	summaryLinModelNorm <- summary(linModelNorm)
-	    save(summaryLinModelNorm, file=paste(dsname,"SummaryLinModelNorm.RData",sep="/"))
+	    save(summaryLinModelNorm, file=paste(dsname,"-rundata/SummaryLinModelNorm.RData",sep=""))
     }
     
 }
@@ -45,9 +45,9 @@ rndLinModels <- function(df, dsname, nrep=10000, verbose=FALSE)
     rests[i] <- rmodel$coefficients[2]
     rintercepts[i] <- rmodel$coefficients[1]
   }
-  dir.create(dsname, showWarnings = FALSE)  
-  save(rests, file=paste(dsname,"RndEsts.RData",sep="/"))
-  save(rintercepts, file=paste(dsname,"RndIntercepts.RData",sep="/"))
+  dir.create(paste(dsname, "rundata", sep="-"), showWarnings = FALSE)  
+  save(rests, file=paste(dsname,"-rundata/RndEsts.RData",sep=""))
+  save(rintercepts, file=paste(dsname,"-rundata/RndIntercepts.RData",sep=""))
   
 }
 
@@ -68,9 +68,9 @@ bootLinModels <- function(df, dsname, nrep=10000, verbose=FALSE)
     bests[i] <- rmodel$coefficients[2]
     rhoests[i] <- cor.test(bdata$V,bdata$RSR, method="spearman")$estimate
   }
-  dir.create(dsname, showWarnings = FALSE)  
-  save(bests, file=paste(dsname, "Boot.RData", sep="/"))  
-  save(rhoests, file=paste(dsname, "SpearmanBoot.RData", sep="/"))  
+  dir.create(paste(dsname, "rundata", sep="-"), showWarnings = FALSE)  
+  save(bests, file=paste(dsname, "-rundata/Boot.RData", sep=""))  
+  save(rhoests, file=paste(dsname, "-rundata/SpearmanBoot.RData", sep=""))  
 }
 
 
@@ -92,11 +92,11 @@ linModelsControl <- function(V, RSR, dfcontrols, dsname)
   extradata.norm <- data.frame(rV=rV.norm, RSR=RSR.norm)
   linModelControlNorm <- lm(rV ~ RSR, data = extradata.norm, model=FALSE)
   
-  dir.create(dsname, showWarnings = FALSE)  
+  dir.create(paste(dsname, "rundata", sep="-"), showWarnings = FALSE)  
 
-  save(preModelControl, file=paste(dsname,"PreModelControl.RData",sep="/"))
-  save(linModelControl, file=paste(dsname,"LinModelControl.RData",sep="/"))
-  save(linModelControlNorm, file=paste(dsname,"LinModelControlNorm.RData",sep="/"))
+  save(preModelControl, file=paste(dsname,"-rundata/PreModelControl.RData",sep=""))
+  save(linModelControl, file=paste(dsname,"-rundata/LinModelControl.RData",sep=""))
+  save(linModelControlNorm, file=paste(dsname,"-rundata/LinModelControlNorm.RData",sep=""))
 }
 
 
@@ -122,22 +122,20 @@ plotLM <- function(plotData, rests, bests, xlab, ylab, booted=TRUE, coords=c(0,0
   {
     h1 <- hist(rests, plot=F, breaks=30)
     h2 <- hist(bests, plot=F, breaks=30)
-  
-    
-	suppressMessages(require(Hmisc))
+    suppressMessages(require(Hmisc))
   
     xlims <- range(c(rests,bests))
-	ylims <- c(max(c(h1$density,h2$density))*0.01,1.1*max(c(h1$density,h2$density)))
-	plot(h1$mids, h1$density, col="blue", type="l", xlim=xlims,ylim=ylims, xlab="", ylab="", lwd=2, cex.axis=1.2) 
-	polygon(x=c(0,h1$mids,0),  y = c(0,h1$density ,0), col=rgb(0,0,1,0.3), border="blue", lwd=2)
-	polygon(x=c(0,h2$mids,0),  y = c(0,h2$density ,0), col=rgb(1,0,0,0.3), border="red", lwd=2)
-	abline(h=0, lwd=2)
-	abline(v=0, lty=1, col="black", lwd=1)
-	abline(v=mean(bests), col="red", lwd=2, lty=2)
-	abline(v=mean(rests), col="blue", lty=2, lwd=2)
-	mtext(side=1, line=3, expression(hat(b)), cex=1.7)
-	mtext(side=2, line=2.5, "Density", cex=1.7)
-	box()
+  	ylims <- c(max(c(h1$density,h2$density))*0.01,1.1*max(c(h1$density,h2$density)))
+  	plot(h1$mids, h1$density, col="blue", type="l", xlim=xlims,ylim=ylims, xlab="", ylab="", lwd=2, cex.axis=1.2) 
+  	polygon(x=c(0,h1$mids,0),  y = c(0,h1$density ,0), col=rgb(0,0,1,0.3), border="blue", lwd=2)
+  	polygon(x=c(0,h2$mids,0),  y = c(0,h2$density ,0), col=rgb(1,0,0,0.3), border="red", lwd=2)
+  	abline(h=0, lwd=2)
+  	abline(v=0, lty=1, col="black", lwd=1)
+  	abline(v=mean(bests), col="red", lwd=2, lty=2)
+  	abline(v=mean(rests), col="blue", lty=2, lwd=2)
+  	mtext(side=1, line=3, expression(hat(b)), cex=1.7)
+  	mtext(side=2, line=2.5, "Density", cex=1.7)
+	  box()
   }
 }
 
@@ -168,7 +166,7 @@ statsTable <- function(dsname, linModel, bests, rests, rhoests, linModelRobust, 
 
 calcPlotDataSimple <- function(df, dsname)
 {
-  load(file=paste(dsname,"LinModel.RData",sep="/"))  
+  load(file=paste(dsname,"-rundata/LinModel.RData",sep=""))  
   w <- 0.01
   RSRs <- seq(min(df$RSR), max(df$RSR)+w, by=w)
   err <- stats::predict(linModel, newdata=data.frame(RSR=RSRs), interval = "confidence")
@@ -179,7 +177,7 @@ calcPlotDataSimple <- function(df, dsname)
   plotData <- data.frame(RSRs=RSRs, mnPred=preds, upperPred=ucl, lowerPred=lcl)
   
   dir.create(dsname, showWarnings = FALSE)  
-  save(plotData, file=paste(dsname, "PlotDataSimple.RData", sep="/"))  
+  save(plotData, file=paste(dsname, "-rundata/PlotDataSimple.RData", sep=""))  
   
 }
 
@@ -202,9 +200,9 @@ linModelsControl <- function(V, RSR, dfcontrols, dsname)
   extradata.norm <- data.frame(rV=rV.norm, RSA=RSR.norm)
   linModelControlNorm <- lm(rV ~ RSR, data = extradata.norm, model=FALSE)
   
-  dir.create(dsname, showWarnings = FALSE)  
+  dir.create(paste(dsname, "rundata", sep="-"), showWarnings = FALSE)  
 
-  save(preModelControl, file=paste(dsname,"PreModelControl.RData",sep="/"))
-  save(linModelControl, file=paste(dsname,"LinModelControl.RData",sep="/"))
-  save(linModelControlNorm, file=paste(dsname,"LinModelControlNorm.RData",sep="/"))
+  save(preModelControl, file=paste(dsname,"-rundata/PreModelControl.RData",sep=""))
+  save(linModelControl, file=paste(dsname,"-rundata/LinModelControl.RData",sep=""))
+  save(linModelControlNorm, file=paste(dsname,"-rundata/LinModelControlNorm.RData",sep=""))
 }
