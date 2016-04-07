@@ -9,7 +9,7 @@ Results of "The QWERTY effect on the web: How typing shapes the meaning of words
 4. [Dooyoo Product Names](https://github.com/dgarcia-eu/QWERTY_WWW/blob/master/01_Decoding/04_Decoding_Dooyoo.ipynb)
 5. [IMDB Movie Titles](https://github.com/dgarcia-eu/QWERTY_WWW/blob/master/01_Decoding/05_Decoding_IMDB.ipynb)
 6. [MovieLens Movie Titles](https://github.com/dgarcia-eu/QWERTY_WWW/blob/master/01_Decoding/06_Decoding_MovieLens.ipynb)
-7. [RottenTomateos Movie Titles](https://github.com/dgarcia-eu/QWERTY_WWW/blob/master/01_Decoding/07_Decoding_RottenTomatoes.ipynb)
+7. [RottenTomatoes Movie Titles](https://github.com/dgarcia-eu/QWERTY_WWW/blob/master/01_Decoding/07_Decoding_RottenTomatoes.ipynb)
 8. [BookCrossing Book Titles](https://github.com/dgarcia-eu/QWERTY_WWW/blob/master/01_Decoding/08_Decoding_BookCrossing.ipynb)
 9. [YouTube Video Titles](https://github.com/dgarcia-eu/QWERTY_WWW/blob/master/01_Decoding/09_Decoding_YouTube.ipynb)
 10. [PornHub Video Titles](https://github.com/dgarcia-eu/QWERTY_WWW/blob/master/01_Decoding/10_Decoding_PornHub.ipynb)
